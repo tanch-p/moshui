@@ -1,18 +1,49 @@
-<script>
+<script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-export default {
-  setup() {
-    const username = ref("");
-    const password = ref("");
-    const router = useRouter();
-    const route = useRoute();
-    const login = () => {
-      window.user = username.value;
-      const redirectPath = route.query.redirect || "/protected";
-      router.push(redirectPath);
-    };
-    return { username, password, login };
-  },
+import axios from 'axios'
+import { reactive } from 'vue'
+import { store } from '../components/store.js'
+
+const username = ref("");
+const password = ref("");
+const msg = ref("");
+const router = useRouter();
+const route = useRoute();
+const handleLogin = async () => {
+  console.log("hi");
+
+  msg.value = "";
+  const loginParams = {
+    username: username.value,
+    password: password.value,
+  };
+  await axios
+    .post("http://localhost:3001/api/users/login", loginParams)
+    .then((response) => {
+      alert("Successful login.");
+      store.user = username;
+      router.replace("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const login = () => {
+  window.user = username.value;
+  const redirectPath = route.query.redirect || "/protected";
+  router.push(redirectPath);
 };
 </script>
+
+<template>
+  <form @submit.prevent="onSubmit" @submit="handleLogin">
+    Username
+    <input v-model="username" placeholder="username" />
+    Password
+    <input v-model="password" placeholder="password" />
+    <button type="submit">Submit</button>
+  </form>
+  <p>New to us? <router-link to="/signup"> Signup</router-link> here!</p>
+  From A: {{ store.user }}
+</template>

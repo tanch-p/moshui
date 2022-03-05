@@ -12,6 +12,10 @@ import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
 import PageNotFound from "@/views/PageNotFound.vue";
 import Jokes from "@/views/Jokes.vue";
+import New from "@/views/New.vue"
+import JokeShow from "@/views/JokeShow.vue"
+import Login from "@/views/Login.vue"
+import Signup from "@/views/Signup.vue"
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -31,6 +35,29 @@ const routes = [
     path: "/jokes",
     name: "Jokes",
     component: Jokes,
+    props: true,
+  },
+  {
+    path: "/new",
+    name: "New",
+    component: New,
+    props: true,
+  },
+  {
+    path: "/jokes/:id",
+    component: JokeShow,
+    props: true,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    props: true,
+  },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: Signup,
     props: true,
   },
   { path: "/user/:id", component: User, props: true },

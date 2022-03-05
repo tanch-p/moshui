@@ -1,14 +1,17 @@
 <script setup>
-import { ref,nextTick} from "vue";
+import { ref, watch, computed, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 
 let language = "cn";
 const header = ref(language !== "cn");
 const text = ref(`${language}`);
 
-nextTick(() => {
-  // access updated DOM
-  const collection = ref(document.getElementsByClassName("router-link-active"));
-  console.log(collection);
+const route = useRoute();
+watchEffect(() => route.path, console.log(route.path));
+
+const destinationId = computed(() => {
+  console.log(this.$route.path);
+  return parseInt(this.$route.params.id);
 });
 </script>
 
@@ -18,11 +21,13 @@ nextTick(() => {
     <p v-else>墨水</p>
     <p class="">{{ text }}</p>
   </div>
-  <div id="navbar" class="h-10 bg-gray-400">
+  <div id="navbar" class="h-10 bg-gray-400 flex flex-row">
     <router-link to="/">Home</router-link>
     <router-link to="/about"> About</router-link>
     <router-link to="/jokes"> Jokes</router-link>
+    <router-link to="/new"> New</router-link>
 
-    <div class="float-right mr-5">Login</div>
+    <router-link to="/login"> Login</router-link>
+    <p>{{ $route.path }}</p>
   </div>
 </template>

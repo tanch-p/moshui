@@ -1,5 +1,5 @@
 {
-    "python.linting.pylintEnabled": false,
-    "python.linting.mypyEnabled": true,
-    "python.linting.enabled": true
+    "vetur.validation.template": false,
+    "vetur.validation.script": false,
+    "vetur.validation.style": false,
 }
