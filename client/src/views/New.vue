@@ -1,31 +1,44 @@
 <script setup>
-import { debounce } from "lodash";
-import { ref, computed } from "vue";
-import { useRouter, useRoute } from 'vue-router'
+import Joke from "../components/uploadJoke.vue";
+import Meme from "../components/uploadMeme.vue";
+import { ref } from "vue";
 
-const router = useRouter();
-const route = useRoute();
+import { store } from "../components/store.js";
 
-const input = ref("");
+const currentTab = ref("Joke");
 
-
-
-
-function addJoke() {
-  console.log(input.value);
-
-  router.push({ name: "Home"});
-}
+const tabs = {
+  Joke,
+  Meme,
+};
+console.log(store);
 </script>
 
-
-
 <template>
-  <main>
-    <h1>Create New Joke</h1>
-    <form @submit.prevent="onSubmit">
-      <textarea class="border" v-model="input"></textarea>
-      <button @click="addJoke">Add Joke</button>
-    </form>
-  </main>
+  <div v-if="store.user === ''">
+    Please <router-link to="/login">login </router-link> to be able to make a
+    post
+  </div>
+  <div v-else>
+    <div class="border-2 m-auto w-[100vw] md:w-full">
+      <button
+        v-for="(_, tab) in tabs"
+        :key="tab"
+        :class="[
+          'border rounded-sm bg-[#f0f0f0] hover:bg-[#e0e0e0] p-1',
+          { active: currentTab === tab },
+        ]"
+        @click="currentTab = tab"
+      >
+        {{ tab }}
+      </button>
+    </div>
+    <component :is="tabs[currentTab]" class=""></component>
+  </div>
 </template>
+
+<style>
+.active {
+  background: #e0e0e0;
+}
+</style>

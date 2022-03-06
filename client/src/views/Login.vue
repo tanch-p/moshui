@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import axios from 'axios'
-import { reactive } from 'vue'
-import { store } from '../components/store.js'
+import axios from "axios";
+import { reactive } from "vue";
+import { store } from "../components/store.js";
 
 const username = ref("");
 const password = ref("");
@@ -18,18 +18,19 @@ const handleLogin = async () => {
     username: username.value,
     password: password.value,
   };
-  await axios
-    .post("http://localhost:3001/api/users/login", loginParams)
-    .then((response) => {
-      alert("Successful login.");
-      store.token=response?.data?.data
-      console.log(response.data);
-      store.user = username;
-      router.replace("/");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const response = await axios.post(
+      "http://localhost:3001/api/users/login",
+      loginParams
+    );
+    alert("Successful login.");
+    store.token = response?.data?.data;
+    console.log(response.data);
+    store.user = username;
+    router.go(-1);
+  } catch (err) {
+    console.log(err);
+  }
 };
 const login = () => {
   window.user = username.value;
@@ -47,5 +48,4 @@ const login = () => {
     <button type="submit">Submit</button>
   </form>
   <p>New to us? <router-link to="/signup"> Signup</router-link> here!</p>
-  From A: {{ store.user }}
 </template>

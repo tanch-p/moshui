@@ -1,7 +1,7 @@
 <script setup>
-const destinationId = computed(() => {
-  return parseInt(this.$route.params.id);
-});
+// const destinationId = computed(() => {
+//   return parseInt(this.$route.params.id);
+// });
 </script>
 
 <template>

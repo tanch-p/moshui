@@ -97,7 +97,7 @@ router.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 	try {
 		const foundUser = await User.findOne({ username: username });
-		console.log("foundUser", foundUser);
+		// console.log("in user route foundUser", foundUser);
 		if (!foundUser) {
 			res.status(403).json({
 				status: "not ok",
@@ -107,7 +107,7 @@ router.post("/login", async (req, res) => {
 			const result = await bcrypt.compare(password, foundUser.password);
 			if (result) {
 				const accessToken = jwt.sign(
-					{ userid: foundUser._id, username: foundUser.username },
+					{ userId: foundUser._id, username: foundUser.username },
 					ACCESS_TOKEN_SECRET,
 					{
 						expiresIn: "1800s",
@@ -127,6 +127,7 @@ router.post("/login", async (req, res) => {
 			}
 		}
 	} catch (err) {
+		console.log(err)
 		res
 			.status(400)
 			.json({ status: "not ok", message: "Fail To Log In User ", error: err });

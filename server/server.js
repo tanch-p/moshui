@@ -8,7 +8,7 @@ const path = require("path");
 
 const userController = require("./controllers/userController")
 const jokeController = require("./controllers/jokeController");
-const ratingController = require("./controllers/ratingController");
+const upvoteController = require("./controllers/upvoteController");
 const commentController = require("./controllers/commentController")
 const replyController = require("./controllers/replyController");
 
@@ -50,7 +50,7 @@ app.use(cors())
   //* ROUTES MIDDLEWARE
   app.use('/api/users', userController)
   app.use("/api/jokes", jokeController);
-  app.use('/api/ratings', ratingController)
+  app.use('/api/upvotes', upvoteController)
   // app.use('/api/comments', commentController);
   // app.use('/api/replies', replyController)
  

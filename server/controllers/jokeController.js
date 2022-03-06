@@ -1,106 +1,136 @@
 const express = require("express");
 const router = express.Router();
-const Recipe = require("../models/recipes.js");
-const { NewRecipeValidationSchema } = require("../validation")
+const Joke = require("../models/jokes.js");
+const jwt = require("jsonwebtoken");
 
 //MIDDLEWARE
-const isLoggedIn = (req, res, next) => {
-  if (req.session.currentUser) {
-    return next()
-  } else {
-    //res.redirect("/login")
-    res.status(401).json({ status: "not ok", message: "user is not authorized"});
-  }
-}
+const authenticateToken = (req, res, next) => {
+  const token = req.headers["authorization"];
+  // const token = authHeader && authHeader.split(" ")[1];
+  if (token === undefined) return res.sendStatus(401);
+  console.log(token);
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
 
-//to seed recipes
-// router.get("/seedRecipe", async (req, res) => {
-//   try {
-//     await Recipe.deleteMany({})
-//     const createdSeedRecipes = await Recipe.insertMany(seedRecipes);
-//     res.status(200).json({ status: "ok", message: "seed recipes created", data: createdSeedRecipes });
-//   } catch (error) {
-//     res.status(400).json({ status: "not ok", message: "fail to create seed recipes ", error: error });
-//   };
-// });
-
-//READ all recipes
+//! get
 router.get("/", async (req, res) => {
   try {
-    const allRecipes = await Recipe.find({}).populate('ratings', 'rating');
-    res.status(200).json({ status: "ok", message: "all recipes fetched", data: allRecipes });
+    const allJokes = await Joke.find({})
+      .populate("upvotes", "upvote")
+      .sort({ date: -1 })
+      .limit(20);
+    res.status(200).json({
+      status: "ok",
+      message: "successfully get all jokes",
+      data: allJokes,
+    });
   } catch (error) {
-    res.status(400).json({ status: "not ok", message: "fail to fetch all recipes ", error: error });
-  };
-})
-
-//Create a new recipe 
-router.post("/new", isLoggedIn, async (req, res) => {
-  //validate req.body
-  const input = req.body
-  const { error } = NewRecipeValidationSchema.validate({
-    name: input.name,
-    description: input.description,
-    servings: input.servings,
-    duration: input.duration,
-    // tags: input.tags
-  })
-  try {
-    if (error) {
-      res.status(400).json({ status: "not ok", message: "fail to create a new recipe ", error });
-    }
-    const createdRecipe = await Recipe.create(req.body);
-    res.status(200).json({ status: "ok", message: "new recipe created", data: createdRecipe }); // .json() will send proper headers in response so client knows it's json coming back
-  } catch (err) {
-    res.status(400).json({ status: "not ok", message: "fail to create a new recipe ", error: err });
-  };
-
+    console.log(error);
+    res.status(400).json({
+      status: "not ok",
+      message: "get jokes request failed ",
+      error: error,
+    });
+  }
 });
 
-//READ a recipe 
+//! New Joke
+router.post("/new", authenticateToken, async (req, res) => {
+  console.log(req.body);
+  const userId = req.user.userId;
+  try {
+    const newJoke = await Joke.create({
+      setup: req.body.setup,
+      punchline: req.body.punchline,
+      author: userId,
+    });
+    res.status(200).json({
+      status: "ok",
+      message: "new joke created",
+      data: newJoke,
+    }); // .json() will send proper headers in response so client knows it's json coming back
+  } catch (err) {
+    res.status(400).json({
+      status: "not ok",
+      message: "joke creation request failed",
+      error: err,
+    });
+  }
+});
+
+//READ a recipe
 router.get("/:id", async (req, res) => {
   try {
-    const foundRecipe = await Recipe.findById(req.params.id).populate("author", "username");
-    res.status(200).json({ status: "ok", message: "one recipe fetched ", data: foundRecipe });
+    const foundRecipe = await Recipe.findById(req.params.id).populate(
+      "author",
+      "username"
+    );
+    res.status(200).json({
+      status: "ok",
+      message: "one recipe fetched ",
+      data: foundRecipe,
+    });
   } catch (error) {
-    res.status(400).json({ status: "not ok", message: "fail to fetch the requested recipe ", error: error });
-  };
+    res.status(400).json({
+      status: "not ok",
+      message: "fail to fetch the requested recipe ",
+      error: error,
+    });
+  }
 });
 
-//DELETE a recipe 
-router.delete("/:id", isLoggedIn, async (req, res) => {
+//DELETE a recipe
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const deletedRecipe = await Recipe.findByIdAndRemove(req.params.id);
-    res.status(200).json({ status: "ok", message: "recipe deleted", data: deletedRecipe });
+    res
+      .status(200)
+      .json({ status: "ok", message: "recipe deleted", data: deletedRecipe });
   } catch (error) {
-    res.status(400).json({ status: "not ok", message: "fail to delete recipe ", error: error });
-  };
+    res.status(400).json({
+      status: "not ok",
+      message: "fail to delete recipe ",
+      error: error,
+    });
+  }
 });
 
 //UPDATE a recipe details
-router.put("/:id", isLoggedIn, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   //validate req.body
-  const input = req.body
+  const input = req.body;
   const { error } = NewRecipeValidationSchema.validate({
     name: input.name,
     description: input.description,
     servings: input.servings,
     duration: input.duration,
     // tags: input.tags
-  })
+  });
   if (error) {
-    res.status(400).json({ status: "not ok", message: "fail to update the recipe ", error });
-  }
-  else {
+    res
+      .status(400)
+      .json({ status: "not ok", message: "fail to update the recipe ", error });
+  } else {
     try {
       const updatedRecipe = await Recipe.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: true });
-      res.status(200).json({ status: "ok", message: "recipe updated", data: updatedRecipe });
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ status: "ok", message: "recipe updated", data: updatedRecipe });
     } catch (err) {
-      res.status(400).json({ status: "not ok", message: "fail to update recipe ", error: err });
-    };
+      res.status(400).json({
+        status: "not ok",
+        message: "fail to update recipe ",
+        error: err,
+      });
+    }
   }
 });
 
