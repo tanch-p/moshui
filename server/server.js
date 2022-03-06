@@ -1,10 +1,9 @@
 // Dependencies
 const express = require("express");
 const mongoose = require("mongoose");
-const session = require("express-session")
 const cors = require("cors");
 const path = require("path");
-const jwt = require("jsonwebtoken");
+
 
 
 const userController = require("./controllers/userController")
@@ -18,7 +17,7 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI;
-const SECRET = process.env.SECRET
+
 
 //* CONNECT MONGODB
 mongoose.connection.on("error", (err) =>
@@ -40,13 +39,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors())
 
-app.use(
-  session({
-    secret: SECRET,
-    resave: false,
-    saveUninitialized:false
-  })
-  )
+// app.use(
+//   session({
+//     secret: SECRET,
+//     resave: false,
+//     saveUninitialized:false
+//   })
+//   )
   
   //* ROUTES MIDDLEWARE
   app.use('/api/users', userController)
@@ -58,7 +57,6 @@ app.use(
 // app.get("/*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "./client/build", "index.html"));
 // });
-
 
 
 app.listen(port, () => {

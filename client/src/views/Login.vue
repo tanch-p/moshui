@@ -22,6 +22,8 @@ const handleLogin = async () => {
     .post("http://localhost:3001/api/users/login", loginParams)
     .then((response) => {
       alert("Successful login.");
+      store.token=response?.data?.data
+      console.log(response.data);
       store.user = username;
       router.replace("/");
     })
