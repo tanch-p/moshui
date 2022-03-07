@@ -1,14 +1,12 @@
-<script>
+<script setup>
 import TheNavigation from "@/components/TheNavigation.vue";
-export default {
-  components: { TheNavigation },
-};
-
+import {ref} from 'vue'
+const App = ref(null)
 </script>
 
 <template>
   <TheNavigation></TheNavigation>
   <div>
-    <router-view></router-view>
+    <router-view ref="App"></router-view>
   </div>
 </template>

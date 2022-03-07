@@ -20,7 +20,7 @@ const handleLogin = async () => {
   };
   try {
     const response = await axios.post(
-      "http://localhost:3001/api/users/login",
+      "/api/users/login",
       loginParams
     );
     alert("Successful login.");

@@ -20,7 +20,7 @@ const handleSubmit = async () => {
       password: password.value,
     };
     await axios
-      .post("http://localhost:3001/api/users/new", newUser)
+      .post("/api/users/new", newUser)
       .then((response) => {
         alert("Account successfully created.");
         router.replace("/login");

@@ -18,7 +18,8 @@ let axiosConfig = {
 onMounted(async () => {
   try {
     const response = await axios.get(
-      `/api/jokes/${route.params.id}`
+      `/api/users/jokes`,
+      axiosConfig
     );
     console.log(response.data.data);
   } catch (err) {
@@ -29,6 +30,6 @@ onMounted(async () => {
 
 <template>
   <main>
-    <h1>jokeshow</h1>
+    <h1>user posts</h1>
   </main>
 </template>

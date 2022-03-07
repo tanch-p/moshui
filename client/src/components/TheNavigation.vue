@@ -2,6 +2,7 @@
 import { ref, watch, computed, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "../components/store.js";
+import UserDropdown from "./UserDropdown.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -9,28 +10,9 @@ const route = useRoute();
 let language = "cn";
 const header = ref(language !== "cn");
 const text = ref(`${language}`);
-const dropdownTheme = ref(
-  "text-gray-700 block px-4 py-2 text-sm hover:bg-gray-300 w-full text-left"
-);
 
 // watchEffect(() => route.path, console.log(route.path));
-
 const toggleDropdown = ref(false);
-
-const logout = () => {
-  store.user = "";
-  store.token = "";
-  router.go(0);
-};
-
-// watch(toggleDropdown, () => {
-//   if (toggleDropdown) {
-//     window.addEventListener(
-//       "click",
-//       () => (toggleDropdown.value = !toggleDropdown.value)
-//     );
-//   }
-// });
 </script>
 
 <template>
@@ -98,23 +80,10 @@ const logout = () => {
             aria-labelledby="menu-button"
             tabIndex="-1"
           >
-            <div className="py-1 w-full z-30">
-              <router-link
-                to="/"
-                :class="dropdownTheme"
-                role="menuitem"
-                tabIndex="-1"
-                >Posts</router-link
-              >
-              <router-link
-                to="/"
-                :class="dropdownTheme"
-                role="menuitem"
-                tabIndex="-1"
-                >Favorites</router-link
-              >
-              <button @click="logout" :class="dropdownTheme">Logout</button>
-            </div>
+            <UserDropdown
+              :toggleDropdown="toggleDropdown"
+              @unmountDropdown="() => (toggleDropdown = !toggleDropdown)"
+            ></UserDropdown>
           </div>
         </div>
       </div>

@@ -81,7 +81,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <router-link to="/jokes/">
+  <router-link :to="{name:'Joke Show',params:{id:joke._id}}">
     <div className="rounded-lg bg-gray-500 p-4 break-inside">
       <div class="flex flex-wrap flex-col lg:w-[200px]">
         <div>{{ joke.setup }}</div>
