@@ -39,6 +39,7 @@ router.post("/new", authenticateToken, async (req, res) => {
 
         res.status(200).json({
           message: "sucessfully upvoted",
+          data: newUpvote,
         });
       } catch (error) {
         res.status(400).json({
@@ -59,67 +60,14 @@ router.post("/new", authenticateToken, async (req, res) => {
 router.delete("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedRating = await Rating.findByIdAndDelete(id);
+    const deletedUpvote = await Upvote.findByIdAndDelete(id);
     res.status(200).json({
-      message: "delete rating route is working",
-      data: deletedRating,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//!update
-router.put("/", authenticateToken, async (req, res) => {
-  console.log("req body", req.body);
-  const { id, rating } = req.body;
-  try {
-    const editedRating = await Rating.findByIdAndUpdate(
-      id,
-      { rating: rating },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json({
-      status: "ok",
-      message: "update rating route is working",
-      data: editedRating,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      status: "not ok",
-      message: "failed to update rating",
-    });
-  }
-});
-
-//!get
-router.post("/", async (req, res) => {
-  const userId = req.body?.userId;
-  const recipeId = req.body?.recipeId;
-  // console.log(req.body);
-  try {
-    const foundRating = await Rating.findOne({
-      userId: userId,
-      recipeId: recipeId,
-    });
-    // console.log(foundRating);
-    let message = "rating found";
-    if (!foundRating) {
-      message = "no rating found for this recipe & user";
-    }
-
-    res.status(200).json({
-      status: "ok",
-      message: message,
-      data: foundRating ?? 0,
+      message: "deleted upvote successfully",
+      data: deletedUpvote,
     });
   } catch (error) {
     res.status(400).json({
-      status: "not ok",
-      message: "rating not found",
+      message: "delete upvote request failed",
       error: error,
     });
   }
@@ -146,7 +94,7 @@ router.get("/:id/:user", async (req, res) => {
       data: foundUpvote ?? false,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({
       message: "finding upvote for user failed",
       error: error,
