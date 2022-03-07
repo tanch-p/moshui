@@ -43,14 +43,20 @@ const toggleDropdown = ref(false);
         New Post</router-link
       >
     </div>
+    <div class="ml-auto">Search</div>
     <div class="ml-auto mr-4 select-none">
-      <router-link v-if="store.user === ''" to="/login"> Login</router-link>
+      <div v-if="store.user === ''">
+        <router-link to="/login"> Sign in</router-link>
+        <router-link to="/signup"> Sign up</router-link>
+      </div>
+
       <div v-else class="flex flex-wrap flex-row">
         <span class="font-semibold mr-2">{{ store.user }}</span>
         <div
           @click="() => (toggleDropdown = !toggleDropdown)"
           class="
-            md:h-[37px] md:w-[37px]
+            h-[37px]
+            w-[37px]
             rounded-full
             bg-slate-700
             hover:cursor-pointer

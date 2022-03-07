@@ -47,5 +47,5 @@ const login = () => {
     <input v-model="password" placeholder="password" />
     <button type="submit">Submit</button>
   </form>
-  <p>New to us? <router-link to="/signup"> Signup</router-link> here!</p>
+  <p>New to us? <router-link to="/signup" class="text-blue-600"> Sign Up</router-link></p>
 </template>

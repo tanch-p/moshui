@@ -16,7 +16,7 @@ console.log(store);
 
 <template>
   <div v-if="store.user === ''">
-    Please <router-link to="/login">login </router-link> to be able to make a
+    Please <router-link to="/login" class="text-blue-600">login</router-link> to be able to make a
     post
   </div>
   <div v-else>

@@ -1,6 +1,5 @@
 todos:
 
-1. report function
-2. superuser
-3. memes upload
-4. css
+1. superuser
+2. memes upload
+3. css

@@ -3,12 +3,13 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import JokeCard from "@/components/jokes/JokeCard.vue";
 
+
 const jokes = ref([{ _id: "", setup: "", punchline: "" }]);
 const dataReady = ref(false);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:3001/api/jokes/");
+    const response = await axios.get("/api/jokes/");
     console.log(response.data.data);
     jokes.value = response.data.data;
     dataReady.value = true;
@@ -37,3 +38,4 @@ const globalShow = ref(false);
     </div>
   </main>
 </template>
+

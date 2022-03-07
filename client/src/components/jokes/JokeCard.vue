@@ -29,7 +29,7 @@ const handleUpvote = async () => {
       console.log("upvote");
       try {
         const response = await axios.post(
-          "http://localhost:3001/api/upvotes/new",
+          "/api/upvotes/new",
           { id: props.joke._id, item: "joke" },
           axiosConfig
         );
@@ -46,7 +46,7 @@ const handleUpvote = async () => {
   } else {
     try {
       const response = await axios.delete(
-        `http://localhost:3001/api/upvotes/${upvoteId.value}`,
+        `/api/upvotes/${upvoteId.value}`,
         axiosConfig
       );
       userUpvoted.value = false;
@@ -65,7 +65,7 @@ onMounted(async () => {
   if (store.token !== "") {
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/upvotes/${props.joke._id}/${store.token}`
+        `/api/upvotes/${props.joke._id}/${store.token}`
       );
       console.log(response.data.data);
       if (response.data.data) {
