@@ -8,35 +8,13 @@ const authenticateToken = (req, res, next) => {
   const token = req.headers["authorization"];
   // const token = authHeader && authHeader.split(" ")[1];
   if (token === undefined) return res.sendStatus(401);
-  console.log(token);
+  // console.log(token);
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
   });
 };
-
-//! get
-router.get("/", async (req, res) => {
-  try {
-    const allJokes = await Joke.find({})
-      .populate("upvotes", "upvote")
-      .sort({ date: -1 })
-      .limit(20);
-    res.status(200).json({
-      status: "ok",
-      message: "successfully get all jokes",
-      data: allJokes,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      status: "not ok",
-      message: "get jokes request failed ",
-      error: error,
-    });
-  }
-});
 
 //! New Joke
 router.post("/new", authenticateToken, async (req, res) => {
@@ -62,75 +40,43 @@ router.post("/new", authenticateToken, async (req, res) => {
   }
 });
 
-//READ a recipe
+//! get all
+router.get("/", async (req, res) => {
+  try {
+    const allJokes = await Joke.find({})
+      .populate("upvotes", "upvote")
+      .sort({ date: -1 })
+      .limit(20);
+    res.status(200).json({
+      message: "successfully get all jokes",
+      data: allJokes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "get jokes request failed ",
+      error: error,
+    });
+  }
+});
+
+//! get one
 router.get("/:id", async (req, res) => {
   try {
-    const foundRecipe = await Recipe.findById(req.params.id).populate(
-      "author",
-      "username"
+    const oneJoke = await Joke.findById(req.params.id).populate(
+      "upvotes",
+      "upvote"
     );
     res.status(200).json({
-      status: "ok",
-      message: "one recipe fetched ",
-      data: foundRecipe,
+      message: "successfully get one joke",
+      data: oneJoke,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
-      status: "not ok",
-      message: "fail to fetch the requested recipe ",
+      message: "get joke request failed ",
       error: error,
     });
-  }
-});
-
-//DELETE a recipe
-router.delete("/:id", authenticateToken, async (req, res) => {
-  try {
-    const deletedRecipe = await Recipe.findByIdAndRemove(req.params.id);
-    res
-      .status(200)
-      .json({ status: "ok", message: "recipe deleted", data: deletedRecipe });
-  } catch (error) {
-    res.status(400).json({
-      status: "not ok",
-      message: "fail to delete recipe ",
-      error: error,
-    });
-  }
-});
-
-//UPDATE a recipe details
-router.put("/:id", authenticateToken, async (req, res) => {
-  //validate req.body
-  const input = req.body;
-  const { error } = NewRecipeValidationSchema.validate({
-    name: input.name,
-    description: input.description,
-    servings: input.servings,
-    duration: input.duration,
-    // tags: input.tags
-  });
-  if (error) {
-    res
-      .status(400)
-      .json({ status: "not ok", message: "fail to update the recipe ", error });
-  } else {
-    try {
-      const updatedRecipe = await Recipe.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
-      res
-        .status(200)
-        .json({ status: "ok", message: "recipe updated", data: updatedRecipe });
-    } catch (err) {
-      res.status(400).json({
-        status: "not ok",
-        message: "fail to update recipe ",
-        error: err,
-      });
-    }
   }
 });
 
