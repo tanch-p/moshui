@@ -30,7 +30,7 @@ mongoose.connection.once("open", () => {
 });
 
 //* MIDDLEWARE
-app.use(express.static(path.join(__dirname, "./client/build")));
+app.use(express.static(path.join(__dirname, "./client/dist")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
