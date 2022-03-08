@@ -21,11 +21,25 @@ const toggleDropdown = ref(false);
     <p v-else>墨水</p>
     <p class="">{{ text }}</p>
   </div>
-  <div id="navbar" class="h-10 bg-gray-400 flex flex-row items-center">
+  <div
+    id="navbar"
+    class="h-10 bg-gray-400 flex flex-row items-center text-white"
+  >
     <router-link to="/">Home</router-link>
     <router-link to="/jokes"> Jokes</router-link>
-    <div class="flex flex-wrap flex-row">
-      <router-link to="/new">
+    <router-link to="/new">
+      <div
+        class="
+          flex flex-wrap flex-row
+          justify-center
+          bg-green-500
+          hover:bg-green-400
+          w-[110px]
+          py-[6px]
+          rounded-md
+          font-semibold
+        "
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -40,14 +54,25 @@ const toggleDropdown = ref(false);
             d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
           />
         </svg>
-        New Post</router-link
-      >
-    </div>
+        <p class="pl-1">New post</p>
+      </div></router-link
+    >
+
     <div class="ml-auto">Search</div>
-    <div class="ml-auto mr-4 select-none">
+    <div class="ml-auto mr-1 select-none">
       <div v-if="store.user === ''">
-        <router-link to="/login"> Sign in</router-link>
-        <router-link to="/signup"> Sign up</router-link>
+        <router-link to="/login"
+          ><button class="w-[80px] h-[35px] font-semibold">
+            Sign in
+          </button></router-link
+        >
+        <router-link to="/signup"
+          ><button
+            class="bg-green-500 hover:bg-green-400 w-[90px] h-[35px] rounded-md font-semibold"
+          >
+            Sign up
+          </button></router-link
+        >
       </div>
 
       <div v-else class="flex flex-wrap flex-row">

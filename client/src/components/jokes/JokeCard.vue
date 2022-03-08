@@ -4,6 +4,8 @@ import axios from "axios";
 import { store } from "../store.js";
 import { useRouter } from "vue-router";
 const props = defineProps({
+  controls: Boolean,
+  size: Object,
   joke: Object,
   globalShow: Boolean,
 });
@@ -15,6 +17,15 @@ const hoverComment = ref(false);
 const userUpvoted = ref(false);
 const userFavorited = ref(false);
 const upvoteId = ref("");
+
+const randomBgColor = () => {
+  const colors = ["slate", "gray", "zinc", "neutral", "stone", "red", "orange",'amber','sky','indigo','purple','blue','teal','green','lime','yellow','emerald','rose'];
+  const intensity = (Math.ceil(Math.random() * 3) * 100 + 500)
+    .toString()
+    .trim();
+  return `bg-${colors[Math.floor(Math.random() * colors.length)]}-${intensity}`;
+};
+
 
 const handleUpvote = async () => {
   let axiosConfig = {
@@ -92,7 +103,10 @@ const handleJokeClick = (e) => {
 
 <template>
   <div
-    class="rounded-lg bg-gray-500 p-4 break-inside hover:cursor-pointer"
+    :class="[
+      'rounded-lg p-4 break-inside hover:cursor-pointer',
+      randomBgColor(),
+    ]"
     @click="handleJokeClick"
     data-name="jokeShow"
   >
@@ -108,7 +122,7 @@ const handleJokeClick = (e) => {
         </p>
         <button v-else @click="localShow = !localShow">>Reveal Answer</button>
       </div>
-      <div class="Post-item-info flex flex-wrap flex-row">
+      <div v-if="controls" class="Post-item-info flex flex-wrap flex-row">
         <div class="flex flex-wrap flex-row">
           <svg
             width="16"
@@ -120,7 +134,10 @@ const handleJokeClick = (e) => {
             <path
               fill="currentColor"
               @click="handleUpvote"
-              :class="['comment hover:fill-green-600', { active: userUpvoted }]"
+              :class="[
+                'comment hover:fill-green-600',
+                { 'fill-[#158a40]': userUpvoted },
+              ]"
               stroke="#ffffff"
               stroke-width="0"
               fill-rule="evenodd"
@@ -168,7 +185,7 @@ const handleJokeClick = (e) => {
               @click="handleFavorite"
               :class="[
                 'favorite hover:fill-pink-600',
-                { active: userFavorited },
+                { 'fill-[rgb(219 39 119)]': userFavorited },
               ]"
               fill-rule="evenodd"
               d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
@@ -181,13 +198,3 @@ const handleJokeClick = (e) => {
   </div>
   {{ userUpvoted }}
 </template>
-
-<style>
-.comment.active {
-  fill: #158a40;
-}
-
-.favorite.active {
-  fill: rgb(219 39 119);
-}
-</style>

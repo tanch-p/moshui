@@ -6,7 +6,7 @@ const App = ref(null)
 
 <template>
   <TheNavigation></TheNavigation>
-  <div>
+  <div class="">
     <router-view ref="App"></router-view>
   </div>
 </template>

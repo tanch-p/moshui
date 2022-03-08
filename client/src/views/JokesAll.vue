@@ -3,9 +3,9 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import JokeCard from "@/components/jokes/JokeCard.vue";
 
-
 const jokes = ref([{ _id: "", setup: "", punchline: "" }]);
 const dataReady = ref(false);
+const globalShow = ref(false);
 
 onMounted(async () => {
   try {
@@ -18,7 +18,6 @@ onMounted(async () => {
   }
 });
 
-const globalShow = ref(false);
 </script>
 <template>
   <div>
@@ -32,7 +31,7 @@ const globalShow = ref(false);
         v-for="(joke, index) in jokes"
         :joke="joke"
         :key="joke._id"
-        :globalShow="globalShow"
+        :controls="true"
       />
       <div v-else></div>
     </div>

@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { store } from "@/components/store.js";
 import { useRouter, useRoute } from "vue-router";
+import jokeCard from "@/components/jokes/JokeCard.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -17,10 +18,7 @@ let axiosConfig = {
 
 onMounted(async () => {
   try {
-    const response = await axios.get(
-      `/api/users/jokes`,
-      axiosConfig
-    );
+    const response = await axios.get(`/api/users/jokes`, axiosConfig);
     console.log(response.data.data);
   } catch (err) {
     console.log(err);
@@ -31,5 +29,6 @@ onMounted(async () => {
 <template>
   <main>
     <h1>user posts</h1>
+    <div class="grid"></div>
   </main>
 </template>

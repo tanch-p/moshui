@@ -11,7 +11,7 @@ const User = {
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
 import PageNotFound from "@/views/PageNotFound.vue";
-import Jokes from "@/views/Jokes.vue";
+import JokesAll from "@/views/JokesAll.vue";
 import New from "@/views/New.vue";
 import JokeShow from "@/views/JokeShow.vue";
 import Login from "@/views/Login.vue";
@@ -35,7 +35,7 @@ const routes = [
   {
     path: "/jokes",
     name: "Jokes",
-    component: Jokes,
+    component: JokesAll,
     props: true,
   },
   {
@@ -46,7 +46,7 @@ const routes = [
   },
   {
     path: "/jokes/:id",
-    name:"Joke Show",
+    name: "Joke Show",
     component: JokeShow,
     props: true,
   },
@@ -62,7 +62,12 @@ const routes = [
     component: Signup,
     props: true,
   },
-  { path: "/user/:id/posts", name:"User Posts", component: UserPosts, props: true },
+  {
+    path: "/user/:id/posts",
+    name: "User Posts",
+    component: UserPosts,
+    props: true,
+  },
   { path: "/user/", component: User, props: true },
   {
     path: "/:catchAll(.*)*",

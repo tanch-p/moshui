@@ -4,4 +4,11 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  purge: {
+    safelist: [
+      {
+        pattern: /bg-/,
+      },
+    ],
+  },
 };
