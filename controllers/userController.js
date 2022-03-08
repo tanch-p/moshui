@@ -135,23 +135,21 @@ router.put("/:userID", authenticateToken, async (req, res) => {
 });
 
 //UPDATE user add a favourite
-router.put("/:userID/addFavorite", async (req, res) => {
-  const { userID } = req.params;
+router.put("/user/addFavorite", authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
   try {
     const updatedUser = await User.findByIdAndUpdate(
-      userID,
+      userId,
       {
         $addToSet: { favorites: [req.body.recipeID] },
       },
       { new: true }
     );
-    res
-      .status(200)
-      .json({ status: "ok", message: "favourite added", data: updatedUser });
+    res.status(200).json({ message: "favourite added", data: updatedUser });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
-      status: "not ok",
-      message: "fail to add favorite",
+      message: "favorite request failed",
       error: error,
     });
   }

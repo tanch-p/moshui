@@ -24,6 +24,7 @@ router.post("/new", authenticateToken, async (req, res) => {
     const newJoke = await Joke.create({
       setup: req.body.setup,
       punchline: req.body.punchline,
+      tags: req.body.tags,
       author: userId,
     });
     res.status(200).json({
