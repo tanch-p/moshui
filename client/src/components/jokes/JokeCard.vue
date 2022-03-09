@@ -91,7 +91,7 @@ const handleUpvote = async () => {
         console.log(err);
       }
     } else {
-      router.push(`/jokes/${props.joke._id}`);
+      router.push(`/login`);
     }
   } else {
     try {
@@ -143,7 +143,7 @@ const handleJokeClick = (e) => {
 <template>
   <div
     :class="[
-      'item rounded-lg pt-4 hover:cursor-pointer w-[100vw] md:w-[32%] md:ml-8 my-4',
+      'item break-inside rounded-lg pt-4 hover:cursor-pointer w-[100vw] md:w-[90%] md:ml-8 my-4',
       bgColor,
     ]"
     @click="handleJokeClick"

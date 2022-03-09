@@ -46,7 +46,7 @@ const shuffle = () => {
     </button>
   </div>
   <main class="">
-    <div class="container flex flex-wrap md:flex-col justify-evenly md:max-h-[135vh] w-[95vw]">
+    <div class="md:masonry-md">
       <JokeCard
         v-if="dataReady"
         v-for="(joke, index) in jokesToShow"
@@ -60,25 +60,4 @@ const shuffle = () => {
   </main>
 </template>
 
-<style>
-/* Re-order items into rows */
-.item:nth-child(3n+1) { order: 1; }
-.item:nth-child(3n+2) { order: 2; }
-.item:nth-child(3n)   { order: 3; }
-
-/* Force new columns */
-.container::before,
-.container::after {
-  content: "";
-  flex-basis: 100%;
-  width: 0;
-  order: 2;
-}
-/* Force new columns */
-.break {
-  flex-basis: 100%;
-  width: 0;
-  margin: 0;
-}
-
-</style>
+//container flex flex-wrap md:flex-col justify-evenly md:max-h-[135vh] w-[95vw]

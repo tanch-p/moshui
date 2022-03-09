@@ -16,14 +16,14 @@ const toggleDropdown = ref(false);
 </script>
 
 <template>
-  <div class="bg-black text-white text-center">
+  <div class="bg-black text-white text-center max-w-[100vw]">
     <p class="text-4xl" v-if="header">Moshui</p>
     <p v-else>墨水</p>
     <p class="">{{ text }}</p>
   </div>
   <div
     id="navbar"
-    class="h-10 bg-gray-400 flex flex-row items-center text-white"
+    class="h-10 bg-gray-400 flex flex-row items-center text-white max-w-[100vw]"
   >
     <router-link to="/" class="mx-2">Home</router-link>
     <!-- <router-link to="/jokes"> Jokes</router-link> -->
@@ -62,13 +62,13 @@ const toggleDropdown = ref(false);
     <div class="ml-auto mr-1 select-none">
       <div v-if="store.user === ''">
         <router-link to="/login"
-          ><button class="w-[80px] h-[35px] font-semibold">
+          ><button class="mr-1 md:w-[80px] h-[35px] font-semibold">
             Sign in
           </button></router-link
         >
         <router-link to="/signup"
           ><button
-            class="bg-green-500 hover:bg-green-400 w-[90px] h-[35px] rounded-md font-semibold"
+            class="bg-green-500 hover:bg-green-400 md:w-[90px] h-[35px] rounded-md font-semibold"
           >
             Sign up
           </button></router-link

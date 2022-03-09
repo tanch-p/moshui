@@ -26,22 +26,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main>
-    <h1>jokeshow</h1>
-
-    <div id="joke-show-container" class="flex flex-wrap flex-col">
-      <div id="joke-show-header-container" class="flex flex-wrap items-center">
-        <div>Pic</div>
-        <div class="grid grid-rows-2">
-          <div>Username</div>
-          <div>Posted:</div>
-        </div>
-        <div id="joke-show-controls" class="flex flex-wrap">
-          <div>Upvotes</div>
-          <div>Favorite</div>
-        </div>
+  <div id="joke-show-container" class="flex flex-wrap flex-col w-full">
+    <div
+      id="joke-show-header-container"
+      class="flex flex-wrap items-center w-full"
+    >
+      <div>Pic</div>
+      <div class="grid grid-rows-2">
+        <div>Username</div>
+        <div>Posted:</div>
       </div>
-      <div id="joke-show-main">Joke</div>
+      <div id="joke-show-controls" class="flex flex-wrap">
+        <div>Upvotes</div>
+        <div>Favorite</div>
+      </div>
     </div>
-  </main>
+    <div id="joke-show-main">Joke</div>
+  </div>
 </template>

@@ -54,9 +54,8 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const oneJoke = await Joke.findById(req.params.id).populate(
-      "upvotes",
-      "upvote"
-    );
+      "upvotes"
+    ).populate("author",'username');
     res.status(200).json({
       message: "successfully get one joke",
       data: oneJoke,
