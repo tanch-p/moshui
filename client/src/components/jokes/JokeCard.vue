@@ -18,14 +18,53 @@ const userUpvoted = ref(false);
 const userFavorited = ref(false);
 const upvoteId = ref("");
 
-const randomBgColor = () => {
-  const colors = ["slate", "gray", "zinc", "neutral", "stone", "red", "orange",'amber','sky','indigo','purple','blue','teal','green','lime','yellow','emerald','rose'];
-  const intensity = (Math.ceil(Math.random() * 3) * 100 + 500)
+const randomBgColor = (num) => {
+  const lightColors = [
+    "red",
+    "sky",
+    "emerald",
+    "orange",
+    "amber",
+    "lime",
+    "rose",
+  ];
+  const darkColors = [
+    "slate",
+    "gray",
+    "zinc",
+    "neutral",
+    "stone",
+    "red",
+
+    "sky",
+    "indigo",
+    "purple",
+    "blue",
+    "teal",
+    "green",
+    "lime",
+
+    "rose",
+  ];
+  const darkIntensity = (Math.ceil(Math.random() * 3) * 100 + 500)
     .toString()
     .trim();
-  return `bg-${colors[Math.floor(Math.random() * colors.length)]}-${intensity}`;
+  const lightIntensity = (Math.ceil(Math.random() * 3) * 100 + 200)
+    .toString()
+    .trim();
+
+  if (num === 1) {
+    return `bg-${
+      darkColors[Math.floor(Math.random() * darkColors.length)]
+    }-${darkIntensity}`;
+  } else {
+    return `bg-${
+      lightColors[Math.floor(Math.random() * lightColors.length)]
+    }-${lightIntensity}`;
+  }
 };
 
+const bgColor = ref(randomBgColor(Math.ceil(Math.random() * 2)));
 
 const handleUpvote = async () => {
   let axiosConfig = {
@@ -104,29 +143,58 @@ const handleJokeClick = (e) => {
 <template>
   <div
     :class="[
-      'rounded-lg p-4 break-inside hover:cursor-pointer',
-      randomBgColor(),
+      'item rounded-lg pt-4 hover:cursor-pointer w-[100vw] md:w-[32%] md:ml-8 my-4',
+      bgColor,
     ]"
     @click="handleJokeClick"
     data-name="jokeShow"
   >
-    <div class="flex flex-wrap flex-col lg:w-[200px]">
-      <p class="" data-name="jokeShow">{{ joke.setup }}</p>
+    <div class="flex flex-wrap flex-col w-full">
+      <p
+        data-name="jokeShow"
+        class="text-white font-bold whitespace-pre-wrap md:text-[24px] lg:text-[32px] px-4"
+      >
+        {{ joke.setup }}
+      </p>
       <div>
         <p
-          v-if="globalShow || localShow"
-          class="text-right"
+          v-show="globalShow || localShow"
           data-name="jokeShow"
+          class="
+            text-right text-white
+            font-bold
+            whitespace-pre-wrap
+            mt-4
+            px-4
+            md:text-[24px] 
+            lg:text-[32px]
+          "
         >
           {{ joke.punchline }}
         </p>
-        <button v-else @click="localShow = !localShow">>Reveal Answer</button>
+        <p
+          v-if="!globalShow && !localShow"
+          @click="localShow = !localShow"
+          class="text-right text-white font-bold md:text-[20px]  lg:text-[28px] py-6"
+        >
+          >Click to Reveal Answer
+        </p>
       </div>
-      <div v-if="controls" class="Post-item-info flex flex-wrap flex-row">
-        <div class="flex flex-wrap flex-row">
+      <div
+        class="
+          bg-gray-400
+          hover:bg-gray-300
+          flex flex-row
+          w-full
+          justify-center
+          rounded-b-lg
+        "
+        v-if="controls"
+      >
+        <div class="flex flex-wrap flex-row items-center mx-4">
           <svg
-            width="16"
-            height="16"
+            width="28"
+            height="28"
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -135,8 +203,8 @@ const handleJokeClick = (e) => {
               fill="currentColor"
               @click="handleUpvote"
               :class="[
-                'comment hover:fill-green-600',
-                { 'fill-[#158a40]': userUpvoted },
+                'comment hover:fill-green-400',
+                { 'fill-green-600': userUpvoted },
               ]"
               stroke="#ffffff"
               stroke-width="0"
@@ -146,12 +214,12 @@ const handleJokeClick = (e) => {
             ></path>
           </svg>
           <div
-            class="MediaBody Post-item-vote-points Post-item-vote-points--false"
+            class="text-gray-100 font-medium"
           >
             {{ joke.upvotes.length }}
           </div>
         </div>
-        <div
+        <!-- <div
           @mouseover="hoverComment = true"
           @mouseleave="hoverComment = false"
           class="flex flex-wrap flex-row"
@@ -173,18 +241,19 @@ const handleJokeClick = (e) => {
             ></path>
           </svg>
           <div :class="[hoverComment ? 'text-neutral-400' : '']">12</div>
-        </div>
-        <div class="flex flex-wrap flex-row">
+        </div> -->
+        <div class="flex flex-wrap flex-row mx-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
+            width="28"
+            height="28"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
             <path
               @click="handleFavorite"
               :class="[
-                'favorite hover:fill-pink-600',
+                'favorite hover:fill-pink-500',
                 { 'fill-[rgb(219 39 119)]': userFavorited },
               ]"
               fill-rule="evenodd"
@@ -196,5 +265,4 @@ const handleJokeClick = (e) => {
       </div>
     </div>
   </div>
-  {{ userUpvoted }}
 </template>

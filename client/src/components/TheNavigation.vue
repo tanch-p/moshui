@@ -25,8 +25,8 @@ const toggleDropdown = ref(false);
     id="navbar"
     class="h-10 bg-gray-400 flex flex-row items-center text-white"
   >
-    <router-link to="/">Home</router-link>
-    <router-link to="/jokes"> Jokes</router-link>
+    <router-link to="/" class="mx-2">Home</router-link>
+    <!-- <router-link to="/jokes"> Jokes</router-link> -->
     <router-link to="/new">
       <div
         class="
@@ -58,7 +58,7 @@ const toggleDropdown = ref(false);
       </div></router-link
     >
 
-    <div class="ml-auto">Search</div>
+    <div class="ml-auto invisible">Search</div>
     <div class="ml-auto mr-1 select-none">
       <div v-if="store.user === ''">
         <router-link to="/login"

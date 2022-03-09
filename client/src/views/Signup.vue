@@ -36,16 +36,11 @@ const handleSubmit = async () => {
       });
   }
 };
-const login = () => {
-  window.user = username.value;
-  const redirectPath = route.query.redirect || "/protected";
-  router.push(redirectPath);
-};
 </script>
 
 <template>
-  <div class="flex flex-none items-center h-[70vh]">
-    <div class="flex flex-wrap flex-col items-center w-full relative">
+  <div class="flex flex-none items-center h-[70vh] w-full">
+    <div class="flex flex-wrap flex-col items-center mx-auto w-full md:w-[990px]">
       <h2>Register your account</h2>
       <p class="text-red-500">{{ msg }}</p>
       <div class="flex flex-wrap flex-col my-2 w-[40%] relative text-center">
@@ -109,7 +104,7 @@ const login = () => {
             </button>
             <button
               v-else
-              type="click"
+              type="button"
               @click="() => (passwordType = 'password')"
             >
               <svg
@@ -150,7 +145,7 @@ const login = () => {
             />
             <button
               v-if="passwordType === 'password'"
-              type="click"
+              type="button"
               @click="() => (passwordType = 'text')"
             >
               <svg
@@ -169,7 +164,7 @@ const login = () => {
             </button>
             <button
               v-else
-              type="click"
+              type="button"
               @click="() => (passwordType = 'password')"
             >
               <svg

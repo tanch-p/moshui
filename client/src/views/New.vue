@@ -9,31 +9,32 @@ const currentTab = ref("Joke");
 
 const tabs = {
   Joke,
-  Meme,
 };
 console.log(store);
 </script>
 
 <template>
   <div v-if="store.user === ''">
-    Please <router-link to="/login" class="text-blue-600">login</router-link> to be able to make a
-    post
+    Please <router-link to="/login" class="text-blue-600">login</router-link> to
+    be able to make a post
   </div>
-  <div v-else>
-    <div class="border-2 m-auto w-[100vw] md:w-full">
-      <button
-        v-for="(_, tab) in tabs"
-        :key="tab"
-        :class="[
-          'border rounded-sm bg-[#f0f0f0] hover:bg-[#e0e0e0] p-1',
-          { active: currentTab === tab },
-        ]"
-        @click="currentTab = tab"
-      >
-        {{ tab }}
-      </button>
+  <div v-else class="flex flex-none items-center h-[90vh]">
+    <div class="flex flex-none flex-col m-auto w-[100vw] md:w-[60vw] relative h-[70%]">
+      <div class="w-full">
+        <button
+          v-for="(_, tab) in tabs"
+          :key="tab"
+          :class="[
+            'border rounded-sm bg-[#f0f0f0] hover:bg-[#e0e0e0] p-1 w-min',
+            { active: currentTab === tab },
+          ]"
+          @click="currentTab = tab"
+        >
+          {{ tab }}
+        </button>
+      </div>
+      <component :is="tabs[currentTab]" ></component>
     </div>
-    <component :is="tabs[currentTab]" class=""></component>
   </div>
 </template>
 

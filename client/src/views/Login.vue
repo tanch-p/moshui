@@ -30,16 +30,13 @@ const handleLogin = async () => {
     console.log(err);
   }
 };
-const login = () => {
-  window.user = username.value;
-  const redirectPath = route.query.redirect || "/protected";
-  router.push(redirectPath);
-};
 </script>
 
 <template>
   <div class="flex flex-none items-center h-[70vh]">
-    <div class="flex flex-wrap flex-col items-center w-full relative">
+    <div
+      class="flex flex-wrap flex-col items-center mx-auto w-full md:w-[990px]"
+    >
       <h2>Login to your account</h2>
       <div class="flex flex-wrap flex-col my-2 w-[40%] relative text-center">
         <form @submit.prevent="onSubmit" @submit="handleLogin">
@@ -102,7 +99,7 @@ const login = () => {
             </button>
             <button
               v-else
-              type="click"
+              type="button"
               @click="() => (passwordType = 'password')"
             >
               <svg

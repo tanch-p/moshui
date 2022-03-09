@@ -1,11 +1,16 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { shuffle as _shuffle } from "lodash-es";
 import axios from "axios";
 import JokeCard from "@/components/jokes/JokeCard.vue";
 
 const jokes = ref([{ _id: "", setup: "", punchline: "" }]);
 const dataReady = ref(false);
 const globalShow = ref(false);
+
+const jokesToShow = computed(()=>{ 
+  return jokes.value.slice(0,10)
+})
 
 onMounted(async () => {
   try {
@@ -18,19 +23,36 @@ onMounted(async () => {
   }
 });
 
+const shuffle = () => {
+  jokes.value = _shuffle(jokes.value);
+};
 </script>
 <template>
   <div>
-    <h1>Jokes</h1>
-    <button @click="() => (globalShow = !globalShow)">Show Answers</button>
+    <button
+      @click="() => (globalShow = !globalShow)"
+      :class="[
+        'text-xs font-semibold text-center py-1 px-2 border rounded-lg',
+        { 'bg-gray-400': globalShow },
+      ]"
+    >
+      Toggle Answers
+    </button>
+    <button
+      @click="shuffle"
+      class="text-xs font-semibold text-center py-1 px-2 border rounded-lg"
+    >
+      shuffle
+    </button>
   </div>
-  <main>
-    <div class="masonry sm:masonry-sm md:masonry-md">
+  <main class="">
+    <div class="container flex flex-wrap md:flex-col justify-evenly md:max-h-[135vh] w-[95vw]">
       <JokeCard
         v-if="dataReady"
-        v-for="(joke, index) in jokes"
+        v-for="(joke, index) in jokesToShow"
         :joke="joke"
         :key="joke._id"
+        :globalShow="globalShow"
         :controls="true"
       />
       <div v-else></div>
@@ -38,3 +60,25 @@ onMounted(async () => {
   </main>
 </template>
 
+<style>
+/* Re-order items into rows */
+.item:nth-child(3n+1) { order: 1; }
+.item:nth-child(3n+2) { order: 2; }
+.item:nth-child(3n)   { order: 3; }
+
+/* Force new columns */
+.container::before,
+.container::after {
+  content: "";
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
+}
+/* Force new columns */
+.break {
+  flex-basis: 100%;
+  width: 0;
+  margin: 0;
+}
+
+</style>

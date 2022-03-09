@@ -13,7 +13,7 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 //MIDDLEWARE
-const authenticateToken=require('../jwtAuth');
+const authenticateToken = require("../jwtAuth");
 
 //CREATE a new user
 router.post("/new", async (req, res) => {
@@ -32,6 +32,7 @@ router.post("/new", async (req, res) => {
       .status(200)
       .json({ status: "ok", message: "user created", data: newUser });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "not ok",
       message:
