@@ -38,7 +38,7 @@ onMounted(async () => {
 
 <template>
   <main class="">
-    <p class="text-center">{{store.user}}'s Favorites:</p>
+    <p class="">{{store.user}}'s Favorites:</p>
     <div class="grid grid-cols-2 md:w-[80vw] mx-auto gap-y-10 gap-x-32">
       <JokeGrid
         v-if="dataReady"

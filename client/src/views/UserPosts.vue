@@ -23,7 +23,7 @@ onMounted(async () => {
 
 <template>
   <main class="">
-    <p class="text-center">Posts by {{route.params.id}}</p>
+    <p class="">Posts by {{route.params.id}}</p>
     <div class="grid grid-cols-2 md:w-[80vw] mx-auto gap-y-10 gap-x-32">
       <JokeGrid
         v-if="dataReady"
