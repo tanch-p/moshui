@@ -52,14 +52,17 @@ router.post("/login", async (req, res) => {
     // console.log("in user route foundUser", foundUser);
     if (!foundUser) {
       res.status(403).json({
-        status: "not ok",
         message: "Email And/Or Password are not valid",
       });
     } else {
       const result = await bcrypt.compare(password, foundUser.password);
       if (result) {
         const accessToken = jwt.sign(
-          { userId: foundUser._id, username: foundUser.username },
+          {
+            userId: foundUser._id,
+            username: foundUser.username,
+            rights: foundUser.rights,
+          },
           ACCESS_TOKEN_SECRET,
           {
             expiresIn: "1800s",
@@ -126,17 +129,39 @@ router.put("/:userID", authenticateToken, async (req, res) => {
 });
 
 //UPDATE user add a favourite
-router.put("/user/addFavorite", authenticateToken, async (req, res) => {
+router.put("/addFavorite/:item", authenticateToken, async (req, res) => {
   const userId = req.user.userId;
+  const { item } = req.params;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        $addToSet: { favorites: [req.body.recipeID] },
+        $addToSet: { favorites: [item] },
       },
       { new: true }
     );
-    res.status(200).json({ message: "favourite added", data: updatedUser });
+    res.status(200).json({ message: "favourite added" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "favorite request failed",
+      error: error,
+    });
+  }
+});
+
+router.put("/removeFavorite/:item", authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+  const { item } = req.params;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { favorites: [item] },
+      },
+      { new: true }
+    );
+    res.status(200).json({ message: "favourite removed" });
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -147,21 +172,26 @@ router.put("/user/addFavorite", authenticateToken, async (req, res) => {
 });
 
 //! get user jokes
-router.get("/jokes", authenticateToken, async (req, res) => {
-  const id = req.user.userId;
+router.get("/jokes/:username", async (req, res) => {
+  const { username } = req.params;
+  console.log(username);
   try {
-    const allJokes = await Joke.find({ author: id });
+    const user = await User.find({ username: username }).populate("jokes");
+    console.log(user);
+    // if (!user) {
+    //   res.status(400).json('User not found')
+    // } else {
+    //   const allJokes = await Joke.find({ author: user._id });
     res.status(200).json({
-      status: "ok",
       message: "successfully found all jokes by user",
-      data: allJokes,
+      data: user,
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({
-      status: "not ok",
       message: "user jokes fetch request failed",
       error: error,
+      data: "test",
     });
   }
 });
@@ -183,11 +213,29 @@ router.delete("/:userID", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/:user/favorites", authenticateToken, async (req, res) => {
+  const { user } = req.params;
+  // console.log(req.user.username)
+  // console.log(user)
+  if (req.user.username !== user) {
+    res.status(401);
+  }
+  try {
+    const foundUser = await User.findOne({ _id: req.user.userId }).populate('favorites');
+    res
+      .status(200)
+      .json({ status: "ok", message: "user found", data: foundUser });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ status: "not ok", message: "fail to find user ", error: error });
+  }
+});
+
 //READ INDIVIDUAL USER
 
 router.get("/:userID", authenticateToken, async (req, res) => {
   const { userID } = req.params;
-  //TODO: add  a if condition req.session.currentUser.id === userID to make sure user can only access their own data, not other user
   try {
     const foundUser = await User.findOne({ _id: userID });
     res

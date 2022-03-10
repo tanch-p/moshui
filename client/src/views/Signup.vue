@@ -11,7 +11,6 @@ const msg = ref("");
 const router = useRouter();
 const route = useRoute();
 const handleSubmit = async () => {
-  console.log("hi");
   if (password.value !== confirmPassword.value) {
     msg.value = "passwords do not match";
   } else if (username.value === "") {
@@ -40,12 +39,12 @@ const handleSubmit = async () => {
 
 <template>
   <div class="flex flex-none items-center h-[70vh] w-full">
-    <div class="flex flex-wrap flex-col items-center mx-auto w-full md:w-[990px]">
+    <div class="flex flex-wrap flex-col md:items-center mx-auto   md:w-[990px]">
       <h2>Register your account</h2>
       <p class="text-red-500">{{ msg }}</p>
       <div class="flex flex-wrap flex-col my-2 w-[40%] relative text-center">
         <form @submit.prevent="onSubmit" @submit="handleSubmit">
-          <div class="flex flex-row w-full border-2 rounded-sm">
+          <div class="flex flex-row w-full border-2 rounded-sm bg-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6 m-1"
@@ -59,12 +58,12 @@ const handleSubmit = async () => {
               />
             </svg>
             <input
-              class="w-[90%] pl-2 ring-0 outline-none"
+              class="md:w-[90%] pl-2 ring-0 outline-none"
               v-model="username"
               placeholder="username"
             />
           </div>
-          <div class="flex flex-row my-2 w-full border-2 rounded-sm">
+          <div class="flex flex-row my-2 w-full border-2 rounded-sm bg-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6 m-1"
@@ -78,14 +77,14 @@ const handleSubmit = async () => {
               />
             </svg>
             <input
-              class="w-[80%] pl-2 outline-none"
+              class="md:w-[80%] pl-2 outline-none "
               :type="passwordType"
               v-model="password"
               placeholder="password"
             />
             <button
               v-if="passwordType === 'password'"
-              type="click"
+              type="button"
               @click="() => (passwordType = 'text')"
             >
               <svg
@@ -124,7 +123,7 @@ const handleSubmit = async () => {
               </svg>
             </button>
           </div>
-          <div class="flex flex-row my-2 w-full border-2 rounded-sm">
+          <div class="flex flex-row my-2 w-full border-2 rounded-sm bg-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6 m-1"
@@ -138,7 +137,7 @@ const handleSubmit = async () => {
               />
             </svg>
             <input
-              class="w-[80%] pl-2 outline-none"
+              class="md:w-[80%] pl-2 outline-none"
               :type="passwordType"
               v-model="confirmPassword"
               placeholder="re-enter password"

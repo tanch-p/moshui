@@ -14,7 +14,7 @@ console.log(store);
 </script>
 
 <template>
-  <div v-if="store.user === ''">
+  <div v-if="store.user === ''" class="w-[70vw] md:my-64 m-auto text-center">
     Please <router-link to="/login" class="text-blue-600">login</router-link> to
     be able to make a post
   </div>

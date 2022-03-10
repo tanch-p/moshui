@@ -14,10 +14,19 @@ const userSchema = Schema(
       required: true,
       minLength: 6,
     },
-    upvotes: [{type: mongoose.Schema.Types.ObjectId, required: true, ref: "Upvote"}],
-    favorites: [
-      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Favorite" },
+    jokes: [
+      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Joke" },
     ],
+    upvotes: [
+      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Upvote" },
+    ],
+    favorites: [
+      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Joke" },
+    ],
+    rights: {
+      type: String,
+      default: "user",
+    },
   },
   { timeStamp: true }
 );

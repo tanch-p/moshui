@@ -66,17 +66,18 @@ const randomBgColor = (num) => {
 
 const bgColor = ref(randomBgColor(Math.ceil(Math.random() * 2)));
 
+let axiosConfig = {
+  headers: {
+    "Content-Type": "application/json;charset=UTF-8",
+    "Access-Control-Allow-Origin": "*",
+    Authorization: store.token,
+  },
+};
+
 const handleUpvote = async () => {
-  let axiosConfig = {
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      "Access-Control-Allow-Origin": "*",
-      Authorization: store.token,
-    },
-  };
   if (!userUpvoted.value) {
     if (store.user !== "") {
-      console.log("upvote");
+      // console.log("upvote");
       try {
         const response = await axios.post(
           "/api/upvotes/new",
@@ -86,7 +87,7 @@ const handleUpvote = async () => {
         userUpvoted.value = true;
         upvoteId.value = response.data.data._id;
         props.joke.upvotes.push(upvoteId.value);
-        alert("successfully upvoted");
+        // alert("successfully upvoted");
       } catch (err) {
         console.log(err);
       }
@@ -104,15 +105,46 @@ const handleUpvote = async () => {
         ele !== upvoteId.value || ele?.value !== upvoteId.value;
       });
       upvoteId.value = "";
-      alert("successfully un-upvoted");
+      // alert("successfully un-upvoted");
     } catch (err) {
       console.log(err);
     }
   }
 };
 
-const handleFavorite = () => {
-  console.log("fav");
+const handleFavorite = async () => {
+  if (!userFavorited.value) {
+    if (store.user !== "") {
+      // console.log("fav");
+      try {
+        const response = await axios.put(
+          `/api/users/addFavorite/${props.joke._id}`,
+          {},
+          axiosConfig
+        );
+        console.log(response);
+        userFavorited.value = true;
+        // alert("successfully favorited");
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      router.push(`/login`);
+    }
+  } else {
+    try {
+      const response = await axios.put(
+        `/api/users/removeFavorite/${props.joke._id}`,
+        {},
+        axiosConfig
+      );
+      console.log(response);
+      userFavorited.value = false;
+      // alert("successfully un-favorited");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 };
 
 onMounted(async () => {
@@ -121,11 +153,18 @@ onMounted(async () => {
       const response = await axios.get(
         `/api/upvotes/${props.joke._id}/${store.token}`
       );
-      console.log(response.data.data);
+      // console.log(response.data.data);
       if (response.data.data) {
-        console.log("here");
+        // console.log("here");
         userUpvoted.value = true;
         upvoteId.value = response.data.data._id;
+      }
+      const favResponse = await axios.get(
+        `/api/users/${store.user}/favorites`
+      ,axiosConfig);
+      // console.log(favResponse);
+      if(favResponse.data.data.favorites.includes(props.joke._id)){
+        userFavorited.value=true;
       }
     } catch (err) {
       console.log(err);
@@ -143,7 +182,7 @@ const handleJokeClick = (e) => {
 <template>
   <div
     :class="[
-      'item break-inside rounded-lg pt-4 hover:cursor-pointer w-[100vw] md:w-[90%] md:ml-8 my-4',
+      'item break-inside rounded-lg pt-4 hover:cursor-pointer  w-[90vw] md:w-[90%] ml-auto md:ml-6 mb-8',
       bgColor,
     ]"
     @click="handleJokeClick"
@@ -152,7 +191,14 @@ const handleJokeClick = (e) => {
     <div class="flex flex-wrap flex-col w-full">
       <p
         data-name="jokeShow"
-        class="text-white font-bold whitespace-pre-wrap md:text-[24px] lg:text-[32px] px-4"
+        class="
+          text-white
+          font-bold
+          whitespace-pre-wrap
+          text-[24px]
+          lg:text-[32px]
+          px-4
+        "
       >
         {{ joke.setup }}
       </p>
@@ -166,7 +212,7 @@ const handleJokeClick = (e) => {
             whitespace-pre-wrap
             mt-4
             px-4
-            md:text-[24px] 
+            text-[24px]
             lg:text-[32px]
           "
         >
@@ -175,7 +221,14 @@ const handleJokeClick = (e) => {
         <p
           v-if="!globalShow && !localShow"
           @click="localShow = !localShow"
-          class="text-right text-white font-bold md:text-[20px]  lg:text-[28px] py-6"
+          class="
+            text-right text-white
+            font-bold
+            text-[20px]
+            lg:text-[28px]
+            py-6
+            mr-2
+          "
         >
           >Click to Reveal Answer
         </p>
@@ -213,9 +266,7 @@ const handleJokeClick = (e) => {
               d="M7.197 2.524a1.2 1.2 0 011.606 0c.521.46 1.302 1.182 2.363 2.243a29.617 29.617 0 012.423 2.722c.339.435.025 1.028-.526 1.028h-2.397v4.147c0 .524-.306.982-.823 1.064-.417.066-1.014.122-1.843.122s-1.427-.056-1.843-.122c-.517-.082-.824-.54-.824-1.064V8.517H2.937c-.552 0-.865-.593-.527-1.028.52-.669 1.32-1.62 2.423-2.722a52.996 52.996 0 012.364-2.243z"
             ></path>
           </svg>
-          <div
-            class="text-gray-100 font-medium"
-          >
+          <div class="text-gray-100 font-medium">
             {{ joke.upvotes.length }}
           </div>
         </div>
@@ -254,7 +305,7 @@ const handleJokeClick = (e) => {
               @click="handleFavorite"
               :class="[
                 'favorite hover:fill-pink-500',
-                { 'fill-[rgb(219 39 119)]': userFavorited },
+                { 'fill-pink-600': userFavorited },
               ]"
               fill-rule="evenodd"
               d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"

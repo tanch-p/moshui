@@ -16,16 +16,27 @@ const toggleDropdown = ref(false);
 </script>
 
 <template>
-  <div class="bg-black text-white text-center max-w-[100vw]">
-    <p class="text-4xl" v-if="header">Moshui</p>
-    <p v-else>墨水</p>
-    <p class="">{{ text }}</p>
+  <div class="absolute left-[47%] select-none w-16 md:w-28">
+    <img class="inline-block" src="@/assets/icon.jpg" alt="icon" />
   </div>
   <div
     id="navbar"
-    class="h-10 bg-gray-400 flex flex-row items-center text-white max-w-[100vw]"
+    class="h-[10vh] mb-4 flex flex-row items-center text-black max-w-[100vw]"
   >
-    <router-link to="/" class="mx-2">Home</router-link>
+    <router-link
+      to="/"
+      class="
+        md:mx-2
+        bg-gray-100
+        font-bold
+        text-center
+        py-1
+        px-2
+        border
+        rounded-lg
+      "
+      >Home</router-link
+    >
     <!-- <router-link to="/jokes"> Jokes</router-link> -->
     <router-link to="/new">
       <div
@@ -34,7 +45,9 @@ const toggleDropdown = ref(false);
           justify-center
           bg-green-500
           hover:bg-green-400
-          w-[110px]
+          md:w-[110px]
+          px-1
+          md:px-0
           py-[6px]
           rounded-md
           font-semibold
@@ -42,7 +55,7 @@ const toggleDropdown = ref(false);
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
+          class="md:h-6 md:w-6 h-0 w-0"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -58,17 +71,29 @@ const toggleDropdown = ref(false);
       </div></router-link
     >
 
-    <div class="ml-auto invisible">Search</div>
+    <!-- <div class="ml-auto invisible">Search</div> -->
     <div class="ml-auto mr-1 select-none">
       <div v-if="store.user === ''">
         <router-link to="/login"
-          ><button class="mr-1 md:w-[80px] h-[35px] font-semibold">
+          ><button class="mr-1 md:w-[80px] h-[35px] font-bold">
             Sign in
           </button></router-link
         >
         <router-link to="/signup"
           ><button
-            class="bg-green-500 hover:bg-green-400 md:w-[90px] h-[35px] rounded-md font-semibold"
+            class="
+              bg-green-500
+              hover:bg-green-400
+              md:w-[90px]
+              w-0
+              h-0
+              invisible
+              md:visible md:h-[35px]
+              px-1
+              md:px-0
+              rounded-md
+              font-bold
+            "
           >
             Sign up
           </button></router-link
@@ -76,19 +101,18 @@ const toggleDropdown = ref(false);
       </div>
 
       <div v-else class="flex flex-wrap flex-row">
-        <span class="font-semibold mr-2">{{ store.user }}</span>
         <div
           @click="() => (toggleDropdown = !toggleDropdown)"
           class="
-            h-[37px]
-            w-[37px]
+            h-[50px]
+            w-[50px]
             rounded-full
-            bg-slate-700
+            bg-lime-200
             hover:cursor-pointer
             relative
           "
         >
-          <p class="mx-auto mt-1.5 font-bold text-center align-middle">
+          <p class="mx-auto mt-2.5 font-bold text-lg text-center align-middle">
             {{ store.user[0].toUpperCase() }}
           </p>
           <div

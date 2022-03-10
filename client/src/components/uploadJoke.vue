@@ -5,11 +5,17 @@ import { store } from "../components/store.js";
 import { debounce } from "lodash-es";
 import axios from "axios";
 
+const props = defineProps({
+  edit: Boolean,
+  prevSetup: String,
+  prevPunchline: String,
+});
+
 const router = useRouter();
 const route = useRoute();
 
-const setup = ref("hello");
-const punchline = ref("world");
+const setup = ref(props.prevSetup ?? "hello");
+const punchline = ref(props.prevPunchline ?? "world");
 const tags = ref([]);
 const tag = ref("");
 
@@ -43,6 +49,29 @@ const addJoke = async () => {
       setup.value = "";
       punchline.value = "";
       tags.value = [];
+    } catch (err) {
+      console.log(err);
+    }
+    // router.push({ name: "Home" });
+  }
+};
+
+const editJoke = async () => {
+  if (setup.value !== "") {
+    const editedJoke = {
+      setup: setup.value,
+      punchline: punchline.value,
+      tags: tags.value,
+    };
+    try {
+      const response = await axios.put(
+        `/api/jokes/${route.params.id}`,
+        editedJoke,
+        axiosConfig
+      );
+
+      alert("Joke successfully edited");
+      router.go(-1);
     } catch (err) {
       console.log(err);
     }
@@ -159,8 +188,17 @@ const removeTag = (index) => {
         @keydown.188="addTag"
         placeholder="Enter a Tag"
       />
-    </div>  
+    </div>
     <button
+      v-if="edit"
+      type="button"
+      @click="editJoke"
+      class="border rounded-lg bg-gray-400 hover:bg-gray-300 px-2 py-1"
+    >
+      Edit
+    </button>
+    <button
+      v-else
       type="button"
       @click="addJoke"
       class="border rounded-lg bg-gray-400 hover:bg-gray-300 px-2 py-1"

@@ -14,9 +14,11 @@ import PageNotFound from "@/views/PageNotFound.vue";
 import JokesAll from "@/views/JokesAll.vue";
 import New from "@/views/New.vue";
 import JokeShow from "@/views/JokeShow.vue";
+import JokeEdit from "@/views/JokeEdit.vue"
 import Login from "@/views/Login.vue";
 import Signup from "@/views/Signup.vue";
 import UserPosts from "@/views/UserPosts.vue";
+import UserFavorites from "@/views/UserFavorites.vue";
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -45,6 +47,12 @@ const routes = [
     props: true,
   },
   {
+    path: "/jokes/edit/:id",
+    name: "Joke Edit",
+    component: JokeEdit,
+    props: true,
+  },
+  {
     path: "/jokes/:id",
     name: "Joke Show",
     component: JokeShow,
@@ -66,6 +74,12 @@ const routes = [
     path: "/user/:id/posts",
     name: "User Posts",
     component: UserPosts,
+    props: true,
+  },
+  {
+    path: "/user/:id/fav",
+    name: "User Fav",
+    component: UserFavorites,
     props: true,
   },
   { path: "/user/", component: User, props: true },

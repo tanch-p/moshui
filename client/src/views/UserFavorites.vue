@@ -9,11 +9,26 @@ const router = useRouter();
 const route = useRoute();
 const dataReady = ref(false);
 const jokes = ref([]);
+
+let axiosConfig = {
+  headers: {
+    "Content-Type": "application/json;charset=UTF-8",
+    "Access-Control-Allow-Origin": "*",
+    Authorization: store.token,
+  },
+};
+
 onMounted(async () => {
+  if (store.token === "") {
+    router.replace("/");
+  }
   try {
-    const response = await axios.get(`/api/users/jokes/${route.params.id}`);
+    const response = await axios.get(
+      `/api/users/${route.params.id}/favorites/`,
+      axiosConfig
+    );
     console.log(response.data.data);
-    jokes.value = response.data.data[0].jokes;
+    jokes.value = response.data.data.favorites;
     dataReady.value = true;
   } catch (err) {
     console.log(err);
@@ -23,7 +38,7 @@ onMounted(async () => {
 
 <template>
   <main class="">
-    <p class="text-center">Posts by {{route.params.id}}</p>
+    <p class="text-center">{{store.user}}'s Favorites:</p>
     <div class="grid grid-cols-2 md:w-[80vw] mx-auto gap-y-10 gap-x-32">
       <JokeGrid
         v-if="dataReady"

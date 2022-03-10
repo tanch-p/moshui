@@ -11,9 +11,14 @@ const msg = ref("");
 const passwordType = ref("password");
 const router = useRouter();
 const route = useRoute();
-const handleLogin = async () => {
-  console.log("hi");
 
+// router.beforeEach(async (to, from) => {
+//   if (from.name === "Signup") {
+//     console.log("yes");
+//   }
+// });
+
+const handleLogin = async () => {
   msg.value = "";
   const loginParams = {
     username: username.value,
@@ -21,13 +26,15 @@ const handleLogin = async () => {
   };
   try {
     const response = await axios.post("/api/users/login", loginParams);
-    alert("Successful login.");
+    // alert("Successful login.");
     store.token = response?.data?.data;
     console.log(response.data);
     store.user = username;
     router.go(-1);
+    router.push("/");
   } catch (err) {
     console.log(err);
+    msg.value = "Email/Password is incorrect";
   }
 };
 </script>
@@ -35,10 +42,11 @@ const handleLogin = async () => {
 <template>
   <div class="flex flex-none items-center h-[70vh]">
     <div
-      class="flex flex-wrap flex-col items-center mx-auto w-full md:w-[990px]"
+      class="flex flex-wrap flex-col md:items-center mx-auto md:w-[990px]"
     >
+      <p class="text-red-500">{{ msg }}</p>
       <h2>Login to your account</h2>
-      <div class="flex flex-wrap flex-col my-2 w-[40%] relative text-center">
+      <div class="flex flex-wrap flex-col my-2 w-[40%] relative text-center ">
         <form @submit.prevent="onSubmit" @submit="handleLogin">
           <div class="flex flex-row w-full border-2 rounded-sm">
             <svg
@@ -54,12 +62,12 @@ const handleLogin = async () => {
               />
             </svg>
             <input
-              class="w-[90%] pl-2 ring-0 outline-none"
+              class="md:w-[90%] pl-2 ring-0 outline-none bg-white"
               v-model="username"
               placeholder="username"
             />
           </div>
-          <div class="flex flex-row my-2 w-full border-2 rounded-sm">
+          <div class="flex flex-row my-2 w-full border-2 rounded-sm bg-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6 m-1"
@@ -73,14 +81,14 @@ const handleLogin = async () => {
               />
             </svg>
             <input
-              class="w-[80%] pl-2 outline-none"
+              class="md:w-[80%] pl-2 outline-none"
               :type="passwordType"
               v-model="password"
               placeholder="password"
             />
             <button
               v-if="passwordType === 'password'"
-              type="click"
+              type="button"
               @click="() => (passwordType = 'text')"
             >
               <svg
