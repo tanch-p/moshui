@@ -10,6 +10,7 @@ router.post("/new", authenticateToken, async (req, res) => {
   const userId = req.user.userId;
   const item = req.body.item;
   const parent = req.body.parent;
+  console.log('item',item)
   try {
     const newComment = await Comment.create({
       author: userId,

@@ -10,7 +10,8 @@ const props = defineProps({
 
 const commentInput = ref("");
 const dataReady = ref(false);
-const topComments = ref([]);
+const allComments = ref([]);
+const jokeId = ref(props.joke._id)
 
 let axiosConfig = {
   headers: {
@@ -44,7 +45,7 @@ onMounted(async () => {
   try {
     const response = await axios.get(`/api/comments/${props.joke._id}`);
     console.log(response);
-    comments.value = response.data.data;
+    allComments.value = response.data.data;
     dataReady.value = true;
   } catch (err) {
     console.log(err);
@@ -85,10 +86,12 @@ onMounted(async () => {
       </button>
     </div>
   </div>
-  <div v-if="dataReady" class="mt-2 border-t md:w-[90%] border-gray-700">
+  <div v-if="dataReady" class="mt-2 border-t md:w-[90%] border-gray-700 bg-slate-100">
     <CommentDiv
-      v-for="(comment, index) in topComments"
+      v-for="(comment, index) in allComments.filter(ele => ele.parent === joke._id)"
       :comment="comment"
+      :allComments="allComments"
+      :jokeId="jokeId"
       :key="comment._id"
     ></CommentDiv>
   </div>
