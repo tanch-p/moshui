@@ -34,7 +34,7 @@ const addComment = async () => {
       axiosConfig
     );
     console.log(response);
-    topComments.value.push(response.data.data);
+    allComments.value.push(response.data.data);
     commentInput.value = "";
   } catch (err) {
     console.log(err);
