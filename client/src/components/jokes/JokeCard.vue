@@ -137,7 +137,7 @@ const handleFavorite = async () => {
         {},
         axiosConfig
       );
-      console.log(response);
+      // console.log(response);
       userFavorited.value = false;
       // alert("successfully un-favorited");
     } catch (err) {
@@ -162,7 +162,7 @@ onMounted(async () => {
         `/api/users/${store.user}/favorites`,
         axiosConfig
       );
-      console.log(favResponse);
+      // console.log(favResponse);
       if (favResponse.data.data.favorites.includes(props.joke._id)) {
         userFavorited.value = true;
       }
