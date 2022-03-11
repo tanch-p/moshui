@@ -221,7 +221,7 @@ router.get("/:user/favorites", authenticateToken, async (req, res) => {
     res.status(401);
   }
   try {
-    const foundUser = await User.findOne({ _id: req.user.userId }).populate('favorites');
+    const foundUser = await User.findOne({ _id: req.user.userId });
     res
       .status(200)
       .json({ status: "ok", message: "user found", data: foundUser });

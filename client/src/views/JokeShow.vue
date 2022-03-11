@@ -124,8 +124,10 @@ onMounted(async () => {
         `/api/users/${store.user}/favorites`,
         axiosConfig
       );
-      // console.log(favResponse);
+      console.log(favResponse);
+      console.log(joke.value._id)
       if (favResponse.data.data.favorites.includes(joke.value._id)) {
+        console.log("here");
         userFavorited.value = true;
       }
       if (store.user === "admin") {
@@ -218,7 +220,7 @@ const deleteJoke = async () => {
               @click="handleFavorite"
               :class="[
                 'favorite hover:fill-pink-500',
-                { 'fill-pink-400': userFavorited },
+                { 'fill-pink-400':userFavorited }
               ]"
               fill-rule="evenodd"
               d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"

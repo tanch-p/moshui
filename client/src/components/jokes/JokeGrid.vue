@@ -116,9 +116,9 @@ onMounted(async () => {
       const response = await axios.get(
         `/api/upvotes/${props.joke._id}/${store.token}`
       );
-      console.log(response.data.data);
+      // console.log(response.data.data);
       if (response.data.data) {
-        console.log("here");
+        // console.log("here");
         userUpvoted.value = true;
         upvoteId.value = response.data.data._id;
       }

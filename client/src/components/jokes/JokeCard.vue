@@ -162,7 +162,7 @@ onMounted(async () => {
       const favResponse = await axios.get(
         `/api/users/${store.user}/favorites`
       ,axiosConfig);
-      // console.log(favResponse);
+      console.log(favResponse);
       if(favResponse.data.data.favorites.includes(props.joke._id)){
         userFavorited.value=true;
       }
