@@ -88,7 +88,7 @@ router.get("/", async (req, res) => {
     const allJokes = await Joke.find({})
       .populate("upvotes", "upvote")
       .sort({ date: -1 })
-      .limit(20);
+      // .limit(20);
     res.status(200).json({
       message: "successfully get all jokes",
       data: allJokes,
