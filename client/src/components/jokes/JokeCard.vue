@@ -101,9 +101,8 @@ const handleUpvote = async () => {
         axiosConfig
       );
       userUpvoted.value = false;
-      props.joke.upvotes = props.joke.upvotes.filter((ele) => {
-        ele !== upvoteId.value || ele?.value !== upvoteId.value;
-      });
+      props.joke.upvotes = props.joke.upvotes.filter((ele) => 
+        ele !== upvoteId.value)
       upvoteId.value = "";
       // alert("successfully un-upvoted");
     } catch (err) {
@@ -122,7 +121,7 @@ const handleFavorite = async () => {
           {},
           axiosConfig
         );
-        console.log(response);
+        // console.log(response);
         userFavorited.value = true;
         // alert("successfully favorited");
       } catch (err) {
@@ -160,11 +159,12 @@ onMounted(async () => {
         upvoteId.value = response.data.data._id;
       }
       const favResponse = await axios.get(
-        `/api/users/${store.user}/favorites`
-      ,axiosConfig);
+        `/api/users/${store.user}/favorites`,
+        axiosConfig
+      );
       console.log(favResponse);
-      if(favResponse.data.data.favorites.includes(props.joke._id)){
-        userFavorited.value=true;
+      if (favResponse.data.data.favorites.includes(props.joke._id)) {
+        userFavorited.value = true;
       }
     } catch (err) {
       console.log(err);

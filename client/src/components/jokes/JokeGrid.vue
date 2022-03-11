@@ -65,51 +65,6 @@ const randomBgColor = (num) => {
 
 const bgColor = ref(randomBgColor(Math.ceil(Math.random() * 2)));
 
-const handleUpvote = async () => {
-  let axiosConfig = {
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      "Access-Control-Allow-Origin": "*",
-      Authorization: store.token,
-    },
-  };
-  if (!userUpvoted.value) {
-    if (store.user !== "") {
-      // console.log("upvote");
-      try {
-        const response = await axios.post(
-          "/api/upvotes/new",
-          { id: props.joke._id, item: "joke" },
-          axiosConfig
-        );
-        userUpvoted.value = true;
-        upvoteId.value = response.data.data._id;
-        props.joke.upvotes.push(upvoteId.value);
-        // alert("successfully upvoted");
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      router.push(`/login`);
-    }
-  } else {
-    try {
-      const response = await axios.delete(
-        `/api/upvotes/${upvoteId.value}`,
-        axiosConfig
-      );
-      userUpvoted.value = false;
-      props.joke.upvotes = props.joke.upvotes.filter((ele) => {
-        ele !== upvoteId.value || ele?.value !== upvoteId.value;
-      });
-      upvoteId.value = "";
-      // alert("successfully un-upvoted");
-    } catch (err) {
-      console.log(err);
-    }
-  }
-};
-
 onMounted(async () => {
   if (store.token !== "") {
     try {
