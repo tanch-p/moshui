@@ -28,11 +28,9 @@ const removeDropdown = () => {
 };
 
 onMounted(() => {
-  //   console.log("dropdown mounted");
   document.addEventListener("click", removeDropdown);
 });
 onUnmounted(() => {
-  //   console.log("dropdown unmounted");
   document.removeEventListener("click", removeDropdown);
 });
 </script>

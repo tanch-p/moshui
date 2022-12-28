@@ -8,7 +8,7 @@ const authenticateToken=require('../jwtAuth');
 
 //!create
 router.post("/new", authenticateToken, async (req, res) => {
-  console.log("upvote", req.body);
+  // console.log("upvote", req.body);
   const userId = req.user.userId;
   const itemId = req.body.id;
   switch (req.body.item) {
@@ -23,7 +23,7 @@ router.post("/new", authenticateToken, async (req, res) => {
           { $push: { upvotes: newUpvote._id } },
           { new: true, upsert: true }
         );
-        console.log(updatedJoke);
+        // console.log(updatedJoke);
 
         res.status(200).json({
           message: "sucessfully upvoted",

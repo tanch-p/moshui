@@ -27,7 +27,6 @@ onMounted(async () => {
       `/api/users/${route.params.id}/favorites/`,
       axiosConfig
     );
-    console.log(response.data.data);
     jokes.value = response.data.data.favorites;
     dataReady.value = true;
   } catch (err) {

@@ -105,7 +105,6 @@ router.get("/:id", async (req, res) => {
     const foundComment = await Comment.find({
       item: id,
     }).populate("author");
-    console.log(foundComment);
     let message = "comments retrieved";
     if (!foundComment) {
       message = "no comments";

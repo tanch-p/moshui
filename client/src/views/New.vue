@@ -10,7 +10,6 @@ const currentTab = ref("Joke");
 const tabs = {
   Joke,
 };
-console.log(store);
 </script>
 
 <template>

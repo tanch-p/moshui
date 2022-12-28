@@ -41,7 +41,6 @@ const addComment = async () => {
       newComment,
       axiosConfig
     );
-    console.log(response);
     props.allComments.push(response.data.data);
     commentInput.value = "";
     replyOpen.value = false;

@@ -8,7 +8,6 @@ const authenticateToken = require("../jwtAuth");
 
 //! New Joke
 router.post("/new", authenticateToken, async (req, res) => {
-  console.log(req.body);
   const userId = req.user.userId;
   try {
     const newJoke = await Joke.create({
@@ -38,7 +37,6 @@ router.post("/new", authenticateToken, async (req, res) => {
 
 //! New Joke
 router.put("/:id", authenticateToken, async (req, res) => {
-  console.log(req.body);
   const { id } = req.params;
   const userId = req.user.userId;
   try {

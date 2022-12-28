@@ -12,7 +12,6 @@ const jokes = ref([]);
 onMounted(async () => {
   try {
     const response = await axios.get(`/api/users/jokes/${route.params.id}`);
-    console.log(response.data.data);
     jokes.value = response.data.data[0].jokes;
     dataReady.value = true;
   } catch (err) {

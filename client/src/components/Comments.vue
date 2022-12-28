@@ -33,10 +33,9 @@ const addComment = async () => {
       newComment,
       axiosConfig
     );
-    console.log(response);
     allComments.value.push(response.data.data);
     commentInput.value = "";
-  } catch (err) {
+  } catch (err) { 
     console.log(err);
   }
 };
@@ -44,7 +43,6 @@ const addComment = async () => {
 onMounted(async () => {
   try {
     const response = await axios.get(`/api/comments/${props.joke._id}`);
-    console.log(response);
     allComments.value = response.data.data;
     dataReady.value = true;
   } catch (err) {

@@ -36,7 +36,6 @@ const removeDropdown = () => {
 };
 
 onMounted(() => {
-  //   console.log("dropdown mounted");
   if (props.jokeAuthor === store.user || store.user === "admin") {
     canDelete.value = true;
   }
@@ -46,7 +45,6 @@ onMounted(() => {
   document.addEventListener("click", removeDropdown);
 });
 onUnmounted(() => {
-  //   console.log("dropdown unmounted");
   document.removeEventListener("click", removeDropdown);
 });
 </script>

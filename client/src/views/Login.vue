@@ -10,13 +10,6 @@ const password = ref("");
 const msg = ref("");
 const passwordType = ref("password");
 const router = useRouter();
-const route = useRoute();
-
-// router.beforeEach(async (to, from) => {
-//   if (from.name === "Signup") {
-//     console.log("yes");
-//   }
-// });
 
 const handleLogin = async () => {
   msg.value = "";
@@ -28,7 +21,6 @@ const handleLogin = async () => {
     const response = await axios.post("/api/users/login", loginParams);
     // alert("Successful login.");
     store.token = response?.data?.data;
-    console.log(response.data);
     store.user = username;
     router.go(-1);
     router.push("/");
